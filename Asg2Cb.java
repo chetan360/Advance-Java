@@ -61,7 +61,7 @@ public class BallMovementApp extends JFrame {
     }
 }
 
-public class Asg2Bc {
+public class Asg2Cb {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
