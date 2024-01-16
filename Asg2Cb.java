@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Asg2Cb extends JFrame {
 
@@ -16,11 +15,8 @@ public class Asg2Cb extends JFrame {
 
         ballPanel = new BallPanel();
         startButton = new JButton("Start");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startBallMovement();
-            }
+        startButton.addActionListener((ActionEvent e) -> {
+            startBallMovement();
         });
 
         setLayout(new BorderLayout());
@@ -30,11 +26,8 @@ public class Asg2Cb extends JFrame {
 
     private void startBallMovement() {
         if (ballThread == null || !ballThread.isAlive()) {
-            ballThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    moveBallVertically();
-                }
+            ballThread = new Thread(() -> {
+                moveBallVertically();
             });
             ballThread.start();
         }
@@ -42,24 +35,26 @@ public class Asg2Cb extends JFrame {
 
     private void moveBallVertically() {
         int y = 0;
-        while (y < ballPanel.getHeight()) {
+        while (true) {
             try {
                 Thread.sleep(20); // Adjust the speed of the ball
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            
             y += 5; // Adjust the vertical movement step
-            ballPanel.setBallPosition(50, y); // Ball size: 50x50 (adjust as needed)
+            
+            if(y > ballPanel.getHeight() - 50) {
+                y = 0;
+            }
+            ballPanel.setBallPosition(200, y); // Ball size: 50x50 (adjust as needed)
             ballPanel.repaint();
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Asg2Cb().setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            new Asg2Cb().setVisible(true);
         });
     }
 }
